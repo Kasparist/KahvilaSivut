@@ -1,0 +1,68 @@
+﻿@model List<Kahvi>
+@{
+    ViewData["Title"] = "KahviLista";
+}
+
+<h1>KahviLista ☕️</h1>
+
+<!-- New Pizza form will go here -->
+<form method="post"  asp-controller="Home">
+    <!-- Form fields for coffee item -->
+    <div class="form-group">
+        <label>Nimi</label>
+        <input name="Nimi" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Hinta</label>
+        <input name="Hinta" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Koko</label>
+        <select name="Koko" class="form-control">
+            <option value="">-- Select Size --</option>
+            <option value="Small">Pieni</option>
+            <option value="Medium">Keskikokoinen</option>
+            <option value="Large">Suuri</option>
+        </select>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" name="Laktoositon" class="form-check-input" />
+        <label class="form-check-label">Laktoositon</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Lisää kahvi</button>
+</form>
+
+
+<!-- List of pizzas will go here -->
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th scope="col">Nimi</th>
+            <th scope="col">Hinta</th>
+            <th scope="col">Koko</th>
+            <th scope="col">Laktoositon</th>
+            <th scope="col">Poista</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var kahvi in Model)
+    {
+        <tr>
+            <td>@kahvi.Nimi</td>
+            <td>@($"{kahvi.Hinta:C}")</td>
+            <td>@kahvi.Koko</td>
+            <td>@(kahvi.Laktoositon ? "✔️" : string.Empty)</td>
+            <td>
+                <form method="post" asp-controller="Home" asp-action="RemoveItem">
+                    <input type="hidden" name="Id" value="@kahvi.Id">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
